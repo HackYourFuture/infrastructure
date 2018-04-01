@@ -1,3 +1,5 @@
+variable "depends_on" { default = [], type = "list" }
+
 variable "function_name" {
   type = "string"
   description = "The function name of the lambda function"
