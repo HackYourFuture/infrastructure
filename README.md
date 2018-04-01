@@ -4,13 +4,12 @@ Infrastructure code for manage cloud resources of HackYourFuture.
 For the time being this code is used mainly to create API resources for the website.
 
 ## Prerequisites
-Before you can use this code you need `make` and `docker`.
-Make sure you install them:
+Before you can use run this project you would need `make` and [`docker`](https://www.docker.com/community-edition) installed.
+
+For install `make` in a MacOS:
 ```
 brew install make
 ```
-
-[Get docker](https://www.docker.com/community-edition)
 
 ## Authorizations
 In order to access the authorizations for deploy new resources to the infrastructure you need to make sure you own the file under `src/configurations.tf` location.
