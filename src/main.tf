@@ -3,6 +3,11 @@ variable "deploy_tag" {
   description = "The function deploy tag"
 }
 
+variable "lambda_role_name" {
+  type = "string"
+  description = "The role name for the lambda function"
+  default = "lambda_proxy_with_ses"
+}
 
 resource "aws_s3_bucket" "source_deploy"{
   bucket = "hyf-api-deploy"
@@ -18,6 +23,13 @@ resource "aws_s3_bucket_object" "object" {
 
 module "role" {
   source = "./modules/iam_role_lambda"
+  role_name = "${var.lambda_role_name}"
+}
+
+module "add_ses_to_role" {
+  source = "./modules/iam_policy_attachment_ses"
+  role_name = "${var.lambda_role_name}"
+  depends_on = ["module.role"]
 }
 
 module "lambda" {

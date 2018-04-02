@@ -18,6 +18,9 @@ web/lambda.zip:
 terraform: src/configurations.tf terraform.tfstate terraform.tfstate.backup
 	@$(RUN_TERRAFORM) $(ARGS) /workspace
 
+init: src/configurations.tf
+	@$(RUN_TERRAFORM) init /workspace
+
 plan: src/configurations.tf
 	@$(RUN_TERRAFORM) plan -var 'deploy_tag=$(WEB_VERSION)' /workspace
 

@@ -1,6 +1,11 @@
 
+variable "role_name" {
+  type = "string"
+  description = "The role where apply the policy attachment document for send emails"
+}
+
 resource "aws_iam_role" "lambda" {
-  name = "serverless_example_lambda"
+  name = "${var.role_name}"
 
   assume_role_policy = <<EOF
 {
