@@ -4,6 +4,12 @@ variable "name" {
   description = "The name of the gateway"
 }
 
+variable "stage" {
+  type = "string"
+  description = "The publishing stage of the gateway"
+  default = "prod"
+}
+
 variable "description" {
   type = "string"
   description = "The description of the gateway"
@@ -61,6 +67,11 @@ resource "aws_api_gateway_integration" "lambda_root" {
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
   uri                     = "${var.lambda_invoke_arn}"
+  request_templates {
+    "application/xml" = "${file("${path.module}/request_template.json")}"
+    "application/json" = "${file("${path.module}/request_template.json")}"
+    "text/html" = "${file("${path.module}/request_template.json")}"
+  }
 }
 
 resource "aws_api_gateway_deployment" "gateway_deployment" {
@@ -70,7 +81,7 @@ resource "aws_api_gateway_deployment" "gateway_deployment" {
   ]
 
   rest_api_id = "${aws_api_gateway_rest_api.rest.id}"
-  stage_name  = "test"
+  stage_name  = "${var.stage}"
 }
 
 resource "aws_lambda_permission" "apigw" {
@@ -82,4 +93,8 @@ resource "aws_lambda_permission" "apigw" {
   # The /*/* portion grants access from any method on any resource
   # within the API Gateway "REST API".
   source_arn = "${aws_api_gateway_deployment.gateway_deployment.execution_arn}/*/*"
+}
+
+output "url" {
+  value = "${aws_api_gateway_deployment.gateway_deployment.invoke_url}"
 }

@@ -15,8 +15,11 @@ RUN_GPG := docker run -it --rm -v $(shell pwd):/gpg vladgh/gpg
 web/lambda.zip:
 	@cd web && npm run lambda
 
+web/infra.config.json:
+	@$(RUN_TERRAFORM) output -json > web/infra.config.json
+
 terraform: src/configurations.tf terraform.tfstate terraform.tfstate.backup
-	@$(RUN_TERRAFORM) $(ARGS) /workspace
+	@$(RUN_TERRAFORM) $(ARGS)
 
 init: src/configurations.tf
 	@$(RUN_TERRAFORM) init /workspace
@@ -24,7 +27,7 @@ init: src/configurations.tf
 plan: src/configurations.tf
 	@$(RUN_TERRAFORM) plan -var 'deploy_tag=$(WEB_VERSION)' /workspace
 
-apply: src/configurations.tf
+apply: src/configurations.tf web/lambda.zip
 	@$(RUN_TERRAFORM) apply -var 'deploy_tag=$(WEB_VERSION)' /workspace
 
 terraform.tfstate:

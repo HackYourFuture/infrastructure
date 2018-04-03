@@ -15,6 +15,7 @@ resource "aws_iam_policy" "allow_send_emails" {
         {
             "Effect": "Allow",
             "Action": [
+                "logs:*",
                 "ses:SendEmail",
                 "ses:SendRawEmail"
             ],

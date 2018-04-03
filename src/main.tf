@@ -1,3 +1,9 @@
+variable "stage" {
+  type = "string"
+  description = "The stage for the api gateway"
+  default = "prod"
+}
+
 variable "deploy_tag" {
   type = "string"
   description = "The function deploy tag"
@@ -12,13 +18,6 @@ variable "lambda_role_name" {
 resource "aws_s3_bucket" "source_deploy"{
   bucket = "hyf-api-deploy"
   acl    = "private"
-}
-
-resource "aws_s3_bucket_object" "object" {
-  bucket = "${aws_s3_bucket.source_deploy.id}"
-  key    = "lambda-${var.deploy_tag}.zip"
-  source = "./../web/lambda.zip"
-  etag   = "${md5(file("./../web/lambda.zip"))}"
 }
 
 module "role" {
@@ -47,7 +46,12 @@ module "gateway" {
   source = "./modules/api_gateway_lambda_proxy"
 
   name = "API Lambda"
+  stage = "${var.stage}"
   description   = "The entry point for the API gateway function"
   lambda_invoke_arn = "${module.lambda.invoke_arn}"
   lambda_arn = "${module.lambda.arn}"
+}
+
+output "api_url" {
+  value = "${module.gateway.url}"
 }
