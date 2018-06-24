@@ -52,6 +52,16 @@ module "gateway" {
   lambda_arn = "${module.lambda.arn}"
 }
 
+module "s3_bucket" {
+  source ="./modules/s3_bucket"
+
+  bucket_site = "hyf-website"
+}
+
+output "website_url" {
+  value = "${module.s3_bucket.url}"
+}
+
 output "api_url" {
   value = "${module.gateway.url}"
 }

@@ -4,11 +4,10 @@ export HOST_GID=$(shell id -g)
 WEB_VERSION = $(shell cd web && git rev-parse --short=7 HEAD)
 
 RUN_TERRAFORM := docker run -it --rm \
+		-w="/workspace" \
 		-v $(shell pwd)/src:/workspace \
 		-v $(shell pwd)/web:/web \
-		-v $(shell pwd)/.terraform:/.terraform \
-		-v $(shell pwd)/terraform.tfstate:/terraform.tfstate \
-		-v $(shell pwd)/terraform.tfstate.backup:/terraform.tfstate.backup hashicorp/terraform
+		hashicorp/terraform
 
 RUN_GPG := docker run -it --rm -v $(shell pwd):/gpg vladgh/gpg
 
@@ -27,7 +26,7 @@ init: src/configurations.tf
 plan: src/configurations.tf
 	@$(RUN_TERRAFORM) plan -var 'deploy_tag=$(WEB_VERSION)' /workspace
 
-apply: src/configurations.tf web/lambda.zip
+apply: src/configurations.tf
 	@$(RUN_TERRAFORM) apply -var 'deploy_tag=$(WEB_VERSION)' /workspace
 
 terraform.tfstate:
