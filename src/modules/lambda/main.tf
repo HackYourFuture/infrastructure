@@ -28,7 +28,7 @@ variable "handler" {
 variable "runtime" {
   type = "string"
   description = "The runtime of your lambda function"
-  default = "nodejs6.10"
+  default = "nodejs8.10"
 }
 
 resource "aws_lambda_function" "function" {

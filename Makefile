@@ -11,8 +11,17 @@ RUN_TERRAFORM := docker run -it --rm \
 
 RUN_GPG := docker run -it --rm -v $(shell pwd):/gpg vladgh/gpg
 
-web/lambda.zip:
-	@cd web && npm run lambda
+clean:
+	@rm -rf web
+
+web:
+	@git clone git@github.com:HackYourFuture/hackyourfuture.github.io.git web
+
+update-web:
+	@cd web && git pull origin master
+
+web/api-$(WEB_VERSION).zip: web update-web
+	@cd web && make upload-lambda
 
 web/infra.config.json:
 	@$(RUN_TERRAFORM) output -json > web/infra.config.json
@@ -20,14 +29,15 @@ web/infra.config.json:
 terraform: src/configurations.tf terraform.tfstate terraform.tfstate.backup
 	@$(RUN_TERRAFORM) $(ARGS)
 
-init: src/configurations.tf
+.terraform: src/configurations.tf
 	@$(RUN_TERRAFORM) init /workspace
 
-plan: src/configurations.tf
+plan: web/api-$(WEB_VERSION).zip .terraform
 	@$(RUN_TERRAFORM) plan -var 'deploy_tag=$(WEB_VERSION)' /workspace
 
-apply: src/configurations.tf
-	@$(RUN_TERRAFORM) apply -var 'deploy_tag=$(WEB_VERSION)' /workspace
+apply: web/api-$(WEB_VERSION).zip .terraform
+	@$(RUN_TERRAFORM) apply -var 'deploy_tag=$(WEB_VERSION)' /workspace && \
+	make web/infra.config.json
 
 terraform.tfstate:
 	@touch terraform.tfstate
