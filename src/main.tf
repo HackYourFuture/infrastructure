@@ -34,7 +34,7 @@ module "infra" {
   stage = "prod"
   lambda_role_name = "infra_api"
   s3_bucket = "${aws_s3_bucket.source_deploy.id}"
-  s3_object = "infra-api-${var.website_api_deploy_tag}.zip"
+  s3_object = "infra-api-${var.infra_api_deploy_tag}.zip"
 
   github_app_token = "${var.GITHUB_APP_TOKEN}"
   github_app_secret = "${var.GITHUB_APP_SECRET}"

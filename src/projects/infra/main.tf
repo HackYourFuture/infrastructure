@@ -52,7 +52,7 @@ module "lambda" {
   function_name = "infra_proxy"
   handler       = "main.handler"
   s3_bucket = "${var.s3_bucket}"
-  s3_key = "infra-api-${var.s3_object}"
+  s3_key = "${var.s3_object}"
   iam_role_arn = "${module.role.role_arn}"
   depends_on = ["aws_s3_bucket_object.object"]
   timeout = 5

@@ -5,8 +5,8 @@ module "sso_role" {
 
 module "add_policy" {
   source = "./../../../modules/iam_policy_sys"
-  role_name = "sso_student_role"
-  depends_on = ["module.sso_student_role"]
+  role_name = "sso_dev_ops"
+  depends_on = ["module.sso_role"]
 }
 
 output "role_arn" {
