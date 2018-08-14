@@ -1,0 +1,7 @@
+.terraform
+web/
+.env*
+.env.enc
+api/node_modules
+api/dist
+api/*.zip
