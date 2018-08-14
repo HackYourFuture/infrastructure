@@ -12,9 +12,9 @@ const AuthClient = new oauth(
 );
 
 const AUTH_MAP = {
-    'teachers': 'arn:aws:iam::786836144270:role/sso_student_role',
-    'class8': 'arn:aws:iam::786836144270:role/sso_student_role',
-    'class14': 'arn:aws:iam::786836144270:role/sso_student_role',
+    'teachers': 'arn:aws:iam::786836144270:role/sso_dev_ops',
+    'class8': 'arn:aws:iam::786836144270:role/sso_student',
+    'class14': 'arn:aws:iam::786836144270:role/sso_student',
 };
 
 const GITHUB_APP_URL = process.env.GITHUB_APP_URL || process.env.TF_VAR_GITHUB_APP_URL;
