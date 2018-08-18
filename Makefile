@@ -10,15 +10,18 @@ endif
 INFRA_VERSION = $(shell git rev-parse --short=7 HEAD)
 WEB_VERSION = $(shell cd web && git rev-parse --short=7 HEAD)
 
-RUN_TERRAFORM := docker run -it --rm \
-		-w="/workspace" \
-		--env-file .env \
+TERRAFORM_ENV_VARIABLES := \
 		--env TF_VAR_AWS_ACCESS_KEY_ID=$(AWS_ACCESS_KEY_ID) \
 		--env TF_VAR_AWS_SECRET_ACCESS_KEY=$(AWS_SECRET_ACCESS_KEY) \
 		--env TF_VAR_AWS_DEFAULT_REGION=$(AWS_DEFAULT_REGION) \
 		--env TF_VAR_GITHUB_APP_TOKEN=$(GITHUB_APP_TOKEN) \
 		--env TF_VAR_GITHUB_APP_SECRET=$(GITHUB_APP_SECRET) \
 		--env TF_VAR_GITHUB_APP_URL=$(GITHUB_APP_URL) \
+		--env TF_VAR_GOOGLE_APP_JWT=$(GOOGLE_APP_JWT)
+
+RUN_TERRAFORM := docker run -it --rm \
+		-w="/workspace" \
+		$(TERRAFORM_ENV_VARIABLES) \
 		--env TF_VAR_website_api_deploy_tag=$(WEB_VERSION) \
 		--env TF_VAR_infra_api_deploy_tag=$(INFRA_VERSION) \
 		-v $(shell pwd)/src:/workspace \

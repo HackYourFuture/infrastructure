@@ -39,6 +39,7 @@ module "infra" {
   github_app_token = "${var.GITHUB_APP_TOKEN}"
   github_app_secret = "${var.GITHUB_APP_SECRET}"
   github_app_url = "${var.GITHUB_APP_URL}"
+  google_app_jwt = "${var.WEBSITE_GOOGLE_JWT}"
 }
 
 // WEBSITE
