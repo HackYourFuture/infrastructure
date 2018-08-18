@@ -35,6 +35,7 @@ variable "GOOGLE_APP_JWT" {
   type = "string"
   description = "The google JWT app token"
 }
+
 variable "MOLLIE_API_KEY" {
   type = "string"
   description = "The mollie API key for the donations"
