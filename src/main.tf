@@ -39,7 +39,6 @@ module "infra" {
   github_app_token = "${var.GITHUB_APP_TOKEN}"
   github_app_secret = "${var.GITHUB_APP_SECRET}"
   github_app_url = "${var.GITHUB_APP_URL}"
-  google_app_jwt = "${var.WEBSITE_GOOGLE_JWT}"
 }
 
 // WEBSITE
@@ -55,6 +54,7 @@ module "website" {
   lambda_s3_key_deploy = "api-${var.website_api_deploy_tag}.zip"
 
   private_uploads_bucket = "${var.s3_bucket_name_web_private_upload}"
+  google_app_jwt = "${var.GOOGLE_APP_JWT}"
 }
 
 // SSO ROLES
