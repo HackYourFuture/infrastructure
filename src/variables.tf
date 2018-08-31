@@ -30,6 +30,16 @@ variable "GITHUB_APP_URL" {
   description = "AWS Access key"
 }
 
+// Environment variables for the Website
+variable "GOOGLE_APP_JWT" {
+  type = "string"
+  description = "The google JWT app token"
+}
+variable "MOLLIE_API_KEY" {
+  type = "string"
+  description = "The mollie API key for the donations"
+}
+
 variable "stage" {
   type = "string"
   description = "The stage for the api gateway"

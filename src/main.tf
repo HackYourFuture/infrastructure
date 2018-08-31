@@ -55,6 +55,7 @@ module "website" {
 
   private_uploads_bucket = "${var.s3_bucket_name_web_private_upload}"
   google_app_jwt = "${var.GOOGLE_APP_JWT}"
+  mollie_api_key = "${var.MOLLIE_API_KEY}"
 }
 
 // SSO ROLES

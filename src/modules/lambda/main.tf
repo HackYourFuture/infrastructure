@@ -43,6 +43,12 @@ variable "timeout" {
   default     = 3
 }
 
+variable "memory_size" {
+  description = "The memory size of the function"
+  type        = "string"
+  default     = 128
+}
+
 resource "aws_lambda_function" "function" {
   function_name = "${var.function_name}"
 
@@ -56,6 +62,7 @@ resource "aws_lambda_function" "function" {
   handler = "${var.handler}"
   runtime = "${var.runtime}"
   timeout = "${var.timeout}"
+  memory_size = "${var.memory_size}"
 
   role = "${var.iam_role_arn}"
 

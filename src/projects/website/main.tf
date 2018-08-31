@@ -31,6 +31,11 @@ variable "google_app_jwt" {
   description = "The authentication details for the spreadsheet operations"
 }
 
+variable "mollie_api_key" {
+  type = "string"
+  description = "The authentication details for the donations"
+}
+
 module "role" {
   source = "./../../modules/iam_role_lambda"
   role_name = "${var.lambda_role_name}"
@@ -50,12 +55,14 @@ module "lambda" {
   s3_bucket = "${var.lambda_s3_bucket_deploy}"
   s3_key = "${var.lambda_s3_key_deploy}"
   iam_role_arn = "${module.role.role_arn}"
+  memory_size = "512"
 
   environment {
 
     variables {
 
       GOOGLE_APP = "${var.google_app_jwt}"
+      MOLLIE_API_KEY = "${var.mollie_api_key}"
 
     }
 
