@@ -69,3 +69,8 @@ module "sso_role_student" {
 module "sso_role_dev_ops" {
   source = "./projects/sso_roles/dev_ops"
 }
+
+// https://github.com/HackYourForecast/hackyourforecast
+module "hackyourforecast" {
+  source = "./projects/hackyourforecast"
+}
