@@ -12,6 +12,13 @@ provider "aws" {
   region     = "${var.AWS_DEFAULT_REGION}"
 }
 
+provider "aws" {
+  alias = "west"
+  access_key = "${var.AWS_ACCESS_KEY_ID}"
+  secret_key = "${var.AWS_SECRET_ACCESS_KEY}"
+  region     = "eu-west-1"
+}
+
 // Generic HYF Bucket for deploy, state and credentials
 resource "aws_s3_bucket" "source_deploy"{
   bucket = "hyf-api-deploy"
@@ -22,7 +29,39 @@ resource "aws_s3_bucket" "source_deploy"{
   }
 }
 
+resource "aws_s3_bucket" "infra"{
+  bucket = "hyf-infra"
+  acl    = "private"
+
+  versioning {
+    enabled = true
+  }
+}
+
 // PROJECTS
+resource "aws_default_vpc" "default" {}
+
+module "network" {
+  source = "./projects/network"
+  vpc_id = "${aws_default_vpc.default.id}"
+}
+
+// General shared DB
+module "bastion" {
+  source = "./projects/bastion"
+  security_group_ids = ["${module.network.bastion_sg_id}"]
+}
+
+module "db" {
+  source = "./projects/database"
+  security_group_ids = ["${module.network.db_sg_id}"]
+}
+
+// HackYourForecast
+module "hackyourforecast" {
+  source = "./projects/hackyourforecast"
+  vpc_id = "${aws_default_vpc.default.id}"
+}
 
 // INFRA-API
 // allows student to get authenticantion to the AWS resources,
